@@ -1,5 +1,11 @@
+// server/test/setup.js
+import { jest } from "@jest/globals"; // <<--- AJOUT
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+jest.setTimeout(120_000); // 2 min pour laisser le temps de télécharger Mongo la 1ère fois
 
 let mongo;
 
@@ -8,11 +14,20 @@ beforeAll(async () => {
   process.env.JWT_SECRET = "test-secret";
   process.env.JWT_EXPIRES_IN = "1h";
 
-  mongo = await MongoMemoryServer.create();
+  // Met le cache binaire Mongo DANS le repo (évite OneDrive/AV)
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+  const downloadDir = path.resolve(__dirname, "../.mongodb-binaries");
+
+  mongo = await MongoMemoryServer.create({
+    downloadDir,
+    binary: { version: "7.0.14" }, // même version que tes logs
+  });
+
   const uri = mongo.getUri();
   process.env.MONGO_URI = uri;
 
-  await mongoose.connect(uri);
+  await mongoose.connect(uri, { dbName: "test" });
 });
 
 afterAll(async () => {
