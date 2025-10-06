@@ -1,0 +1,58 @@
+# --- Node / Monorepo ---
+**/node_modules/
+**/logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# --- Environnements (gardez des .env.example trackés) ---
+# racine
+.env
+.env.*
+!.env.example
+
+# dossiers app
+client/.env
+client/.env.*
+!client/.env.example
+
+server/.env
+server/.env.*
+!server/.env.example
+
+# --- Builds / Bundles / Coverage ---
+**/dist/
+**/build/
+**/coverage/
+**/.cache/
+**/.parcel-cache/
+**/.vite/
+**/.next/
+**/.nuxt/
+**/.svelte-kit/
+.nyc_output/
+
+# --- Outils / Lint / TS ---
+.eslintcache
+.stylelintcache
+*.tsbuildinfo
+
+# --- IDE / OS ---
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Hébergeurs / outillage ---
+.netlify/
+.vercel/
+
+# --- Divers temp ---
+tmp/
+temp/
