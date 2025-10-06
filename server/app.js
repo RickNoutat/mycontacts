@@ -5,7 +5,6 @@ import morgan from "morgan";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
 
-import connectDB from "./config/db.js";
 import corsOptions from "./config/cors.js";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./config/swagger.js";
@@ -15,6 +14,7 @@ import notFound from "./middlewares/notfound.middleware.js";
 import errorHandler from "./middlewares/error.middleware.js";
 
 const app = express();
+const isDev = process.env.NODE_ENV === "development";
 
 // Sécurité & parsing
 app.use(helmet());
@@ -32,7 +32,18 @@ const authLimiter = rateLimit({
 app.use("/auth", authLimiter);
 
 // Swagger
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec, {
+    swaggerOptions: {
+      persistAuthorization: true,
+      tagsSorter: "alpha",
+      operationsSorter: "alpha",
+    },
+    customSiteTitle: "MyContacts API",
+  })
+);
 
 // Routes API
 app.use("/api", apiRouter);

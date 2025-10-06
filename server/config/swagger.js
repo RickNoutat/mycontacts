@@ -1,5 +1,19 @@
 import swaggerJSDoc from "swagger-jsdoc";
 
+const servers = [
+  {
+    url: `http://localhost:${process.env.PORT || 5001}/api`,
+    description: "Local",
+  },
+];
+
+if (process.env.SWAGGER_SERVER_URL) {
+  servers.push({
+    url: process.env.SWAGGER_SERVER_URL,
+    description: "Production",
+  });
+}
+
 const swaggerDefinition = {
   openapi: "3.0.3",
   info: {
