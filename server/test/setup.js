@@ -14,14 +14,14 @@ beforeAll(async () => {
   process.env.JWT_SECRET = "test-secret";
   process.env.JWT_EXPIRES_IN = "1h";
 
-  // Met le cache binaire Mongo DANS le repo (évite OneDrive/AV)
+  // Met le cache binaire Mongo DANS le repo pour éviter OneDrive/AV
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename);
   const downloadDir = path.resolve(__dirname, "../.mongodb-binaries");
 
   mongo = await MongoMemoryServer.create({
     downloadDir,
-    binary: { version: "7.0.14" }, // même version que tes logs
+    binary: { version: "7.0.14" },
   });
 
   const uri = mongo.getUri();
